@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eid Mubarak 🌙</title>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #e2c779;
+            --gold-light: #f5dfa0;
+            --gold-dark: #b89a45;
+            --bg: #070f14;
+            --bg2: #0d1f28;
+            --green-dark: #0a1f18;
+            --teal: #1a4a5a;
+            --cream: #fdf8ee;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background: var(--bg);
+            color: var(--gold);
+            font-family: 'Playfair Display', serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* ---- STARS ---- */
+        #starfield {
+            position: fixed; inset: 0; z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .star {
+            position: absolute;
+            border-radius: 50%;
+            background: white;
+            animation: twinkle var(--dur, 3s) infinite ease-in-out alternate;
+            opacity: 0;
+        }
+        @keyframes twinkle {
+            0% { opacity: 0; transform: scale(0.5); }
+            100% { opacity: var(--op, 0.8); transform: scale(1.2); }
+        }
+
+        /* ---- MOON ---- */
+        #moon-container {
+            position: fixed;
+            top: 30px; right: 40px;
+            z-index: 1;
+            pointer-events: none;
+        }
+        .moon {
+            width: 80px; height: 80px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 35%, #fdf8c0, #e2c779 60%, #b89a45);
+            box-shadow: 0 0 30px 10px rgba(226,199,121,0.3), 0 0 60px 20px rgba(226,199,121,0.1);
+            animation: moonGlow 4s infinite ease-in-out alternate;
+        }
+        @keyframes moonGlow {
+            from { box-shadow: 0 0 30px 10px rgba(226,199,121,0.3), 0 0 60px 20px rgba(226,199,121,0.1); }
+            to { box-shadow: 0 0 50px 20px rgba(226,199,121,0.5), 0 0 90px 35px rgba(226,199,121,0.2); }
+        }
+
+        /* ---- FLOATING LANTERNS ---- */
+        .lantern {
+            position: fixed;
+            font-size: 2rem;
+            animation: floatUp linear infinite;
+            opacity: 0.6;
+            pointer-events: none;
+            z-index: 1;
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) rotate(-10deg); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.4; }
+            100% { transform: translateY(-20vh) rotate(10deg); opacity: 0; }
+        }
+
+        /* ---- MAIN CONTAINER ---- */
+        .container {
+            position: relative;
+            z-index: 10;
+            width: 92%;
+            max-width: 620px;
+            padding: 20px 10px 40px;
+        }
+
+        /* ---- SECTIONS ---- */
+        .section {
+            display: none;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        .section.active {
+            display: block;
+        }
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ---- TYPOGRAPHY ---- */
+        h1 {
+            font-family: 'Great Vibes', cursive;
+            font-size: clamp(2.8rem, 8vw, 4.5rem);
+            line-height: 1.1;
+            text-shadow: 0 0 20px rgba(226,199,121,0.5);
+        }
+        h2 {
+            font-family: 'Great Vibes', cursive;
+            font-size: clamp(2rem, 6vw, 3rem);
+        }
+        .arabic {
+            font-family: 'Amiri', serif;
+            font-size: clamp(1.2rem, 4vw, 1.6rem);
+            direction: rtl;
+            line-height: 2;
+            color: var(--gold-light);
+        }
+        .subtitle {
+            font-style: italic;
+            font-size: 0.85rem;
+            opacity: 0.7;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+        }
+
+        /* ---- CARD ---- */
+        .card {
+            background: linear-gradient(135deg, rgba(13,31,40,0.9), rgba(10,31,24,0.85));
+            border: 1px solid rgba(226,199,121,0.35);
+            border-radius: 14px;
+            padding: 28px 22px;
+            margin: 18px 0;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.6), inset 0 1px 0 rgba(226,199,121,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+        }
+
+        /* ---- ORNAMENT DIVIDER ---- */
+        .ornament {
+            text-align: center;
+            font-size: 1.2rem;
+            letter-spacing: 8px;
+            opacity: 0.5;
+            margin: 16px 0;
+        }
+
+        /* ---- BUTTON ---- */
+        .btn {
+            background: transparent;
+            color: var(--gold);
+            border: 1px solid rgba(226,199,121,0.6);
+            padding: 13px 34px;
+            font-family: 'Playfair Display', serif;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.35s ease;
+            margin-top: 22px;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--gold);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.35s ease;
+            z-index: -1;
+        }
+        .btn:hover { color: #070f14; border-color: var(--gold); }
+        .btn:hover::after { transform: scaleX(1); }
+        .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+        /* ---- STEP 1: BISMILLAH ---- */
+        #step1 .bismillah {
+            font-family: 'Amiri', serif;
+            font-size: clamp(1.4rem, 5vw, 2rem);
+            direction: rtl;
+            color: var(--gold-light);
+            text-align: center;
+            text-shadow: 0 0 15px rgba(226,199,121,0.4);
+            margin-bottom: 8px;
+        }
+        #step1 .salaam {
+            font-family: 'Amiri', serif;
+            font-size: clamp(0.9rem, 3vw, 1.1rem);
+            direction: rtl;
+            color: var(--gold);
+            opacity: 0.85;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* ---- STEP 2: FUNNY MESSAGE SCROLL ---- */
+        #step2 .scroll-container {
+            max-height: 60vh;
+            overflow-y: auto;
+            padding: 10px 5px;
+            scrollbar-width: thin;
+            scrollbar-color: var(--gold-dark) transparent;
+        }
+        #step2 .scroll-container::-webkit-scrollbar { width: 4px; }
+        #step2 .scroll-container::-webkit-scrollbar-track { background: transparent; }
+        #step2 .scroll-container::-webkit-scrollbar-thumb { background: var(--gold-dark); border-radius: 4px; }
+
+        .urdu-line {
+            font-family: 'Amiri', serif;
+            direction: rtl;
+            font-size: clamp(1rem, 3.2vw, 1.25rem);
+            line-height: 2;
+            color: var(--gold-light);
+            text-align: right;
+            padding: 3px 0;
+            opacity: 0;
+            transform: translateX(-10px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+        .urdu-line.revealed { opacity: 1; transform: translateX(0); }
+        .roman-line {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(0.85rem, 2.5vw, 1rem);
+            line-height: 1.8;
+            color: var(--gold);
+            padding: 3px 0;
+            opacity: 0;
+            transform: translateX(10px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+        .roman-line.revealed { opacity: 1; transform: translateX(0); }
+        .highlight-line {
+            color: #ffeb99;
+            font-weight: 600;
+            font-style: italic;
+        }
+        .shayari-line {
+            font-family: 'Great Vibes', cursive;
+            font-size: clamp(1.2rem, 4vw, 1.6rem);
+            color: var(--gold-light);
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.6s ease;
+            line-height: 2;
+        }
+        .shayari-line.revealed { opacity: 1; }
+
+        /* ---- GALLERY ---- */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin: 20px 0;
+        }
+        .gallery-grid .img-wrapper {
+            aspect-ratio: 1;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid rgba(226,199,121,0.4);
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .gallery-grid .img-wrapper:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(226,199,121,0.4);
+        }
+        .gallery-grid img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* ---- TYPEWRITER ---- */
+        .typewriter-box {
+            text-align: left;
+            min-height: 160px;
+            font-size: 1rem;
+            line-height: 1.9;
+        }
+        .cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1em;
+            background: var(--gold);
+            animation: blink 0.7s step-end infinite;
+            vertical-align: text-bottom;
+            margin-left: 2px;
+        }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        /* ---- QUIZ ---- */
+        .quiz-btn {
+            display: block;
+            width: 100%;
+            margin: 10px 0;
+            background: rgba(0,0,0,0.35);
+            border: 1px solid rgba(226,199,121,0.4);
+            text-transform: none;
+            letter-spacing: 0.5px;
+            font-size: 0.95rem;
+            padding: 14px 20px;
+            text-align: left;
+        }
+        .quiz-btn:hover { color: #070f14; }
+        .quiz-btn.wrong { background: rgba(180,30,30,0.4) !important; border-color: #ff4444 !important; color: #ff9999 !important; }
+        .quiz-btn.wrong::after { display: none; }
+        .quiz-btn.correct { background: rgba(30,140,80,0.4) !important; border-color: #44cc88 !important; color: #aaffcc !important; }
+        .quiz-btn.correct::after { display: none; }
+        #quiz-progress {
+            font-size: 0.75rem;
+            opacity: 0.5;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        /* ---- CERTIFICATE ---- */
+        .certificate {
+            border: 3px double rgba(226,199,121,0.7);
+            padding: 36px 24px;
+            background: linear-gradient(160deg, rgba(13,42,23,0.9), rgba(7,15,20,0.95));
+            position: relative;
+            text-align: center;
+            border-radius: 4px;
+        }
+        .certificate::before, .certificate::after {
+            content: '✦ ✦ ✦';
+            display: block;
+            font-size: 1rem;
+            letter-spacing: 12px;
+            opacity: 0.5;
+            margin: 8px 0;
+        }
+        .cert-seal {
+            font-size: 3.5rem;
+            display: block;
+            margin: 12px auto;
+            animation: rotateSeal 8s linear infinite;
+        }
+        @keyframes rotateSeal {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* ---- CONFETTI ---- */
+        .confetti-piece {
+            position: fixed;
+            width: 8px; height: 8px;
+            border-radius: 2px;
+            pointer-events: none;
+            z-index: 999;
+            animation: confettiFall linear forwards;
+        }
+        @keyframes confettiFall {
+            0% { transform: translateY(-10px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+
+        /* ---- RESPONSIVE ---- */
+        @media (max-width: 400px) {
+            .certificate { padding: 24px 14px; }
+            .btn { padding: 11px 22px; font-size: 0.8rem; letter-spacing: 2px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- BACKGROUND -->
+<div id="starfield"></div>
+<div id="moon-container"><div class="moon"></div></div>
+
+<div class="container">
+
+    <!-- ══════ STEP 1: Welcome ══════ -->
+    <section id="step1" class="section active">
+        <div style="text-align:center; margin-bottom: 10px;">
+            <div class="bismillah">بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ</div>
+            <div class="salaam">اَلسَّلامُ عَلَيْكُمْ وَرَحْمَةُ اللهِ وَبَرَكَاتُهُ</div>
+        </div>
+        <h1 style="text-align:center; margin-bottom:4px;">Eid Mubarak</h1>
+        <h2 style="text-align:center;">Nishu Darling 🌙</h2>
+        <div class="ornament">✦ ✦ ✦</div>
+        <div class="card">
+            <p style="font-family:'Amiri',serif; direction:rtl; font-size:1.1rem; line-height:2; color:var(--gold-light);">
+                سب سے پہلے میری چاند جیسی بدصورت، مرچی جیسی میٹھی، الو جیسی عقلمند، بے مثل Bestie کو…
+            </p>
+            <div class="ornament">❧</div>
+            <p style="font-style:italic; font-size:1rem; opacity:0.9;">"My bestie… My personal therapist, full-time Entertainer, &amp; part-time Bodyguard 💖✨"</p>
+            <p style="margin-top:12px; font-size:0.95rem; line-height:1.8;">
+                "As I wrote in my Childhood BestFriend Essay 😜"<br>
+                Stay as kind, cute, possessive<small>(thodi zyada bhi chalegi 🤭)</small>, caring &amp; supportive…
+            </p>
+        </div>
+        <p class="subtitle" style="text-align:center;">Ek chota sa safar, sirf tumhare liye...</p>
+        <div style="text-align:center;">
+            <button class="btn" onclick="nextStep('step1','step2')">Kholo Meri Taraf 🌙</button>
+        </div>
+    </section>
+
+    <!-- ══════ STEP 2: Funny Eid Message ══════ -->
+    <section id="step2" class="section">
+        <p class="subtitle" style="text-align:center;">Eid Mubarak — Ek Khaas Paigham</p>
+        <div class="card">
+            <div class="scroll-container" id="funnyScroll">
+
+                <div class="urdu-line">جلیبی جیسی سیدھی 🍩،</div>
+                <div class="urdu-line">مرچی جیسی میٹھی 🌶️،</div>
+                <div class="urdu-line">برفی جیسی کڑوی 🍬،</div>
+                <div class="urdu-line">چاند جیسی بدصورت 🌚،</div>
+                <div class="urdu-line">آگ جیسی ٹھنڈی 🔥❄️،</div>
+                <div class="urdu-line">برف جیسی گرم 🧊🔥،</div>
+                <div class="urdu-line">الو جیسی عقلمند 🦉،</div>
+                <div class="urdu-line">لومڑی جیسی بھولی 🦊،</div>
+                <div class="urdu-line">کچھوے جیسی تیز 🐢💨،</div>
+                <div class="urdu-line">خرگوش جیسی سست 🐰🐌،</div>
+                <div class="urdu-line">شہد جیسی کھٹی 🍯🍋،</div>
+                <div class="urdu-line">لیموں جیسا میٹھا 🍋🍭،</div>
+                <div class="urdu-line">گلاب جیسا بدنما 🌹😜،</div>
+                <div class="urdu-line">پتھر جیسا نرم 🪨🧸،</div>
+                <div class="urdu-line">طوفان جیسا خاموش 🌪️🤫،</div>
+                <div class="urdu-line">ہوا جیسی بھاری 🌬️🏋️،</div>
+                <div class="urdu-line">سمندر جیسا چھوٹا 🌊🤏،</div>
+                <div class="urdu-line">شیر جیسا ڈرپوک 🦁😱،</div>
+                <div class="urdu-line">گیدڑ جیسا بہادر 🐺🦸،</div>
+                <div class="urdu-line">پہاڑ جیسا ہلکا ⛰️🪶،</div>
+                <div class="urdu-line">بارش جیسی خشک 🌧️🏜️،</div>
+                <div class="urdu-line">صحرا جیسی چمکدار ⚡🏜️…</div>
+
+                <div class="ornament" style="opacity:0; transition: opacity 0.6s;" id="ornament1">✦ ✦ ✦</div>
+
+                <div class="roman-line highlight-line" style="text-align:center; margin:10px 0;">
+                    ایسی عجیب، نرالی، لاجواب، اور تھوڑی سی خطرناک Bestie کو…<br>
+                    <span style="font-size:1.1rem;">Eid ki dheeeeer saari khushiyan Mubarak ho!!! 🎉🌙✨</span>
+                </div>
+
+                <div class="ornament" style="opacity:0; transition:opacity 0.6s;" id="ornament2">❧ ❧ ❧</div>
+
+                <div class="roman-line" style="text-align:center; font-style:italic; margin-top: 10px;">
+                    Dil se Dua hai… 🤲<br>
+                    Khuda tumhein itni kamiyabi de<br>
+                    ke tumhari kamiyabi par <span class="highlight-line">main aaram se raaj kr sakoon 😌👑</span>
+                </div>
+
+                <div class="roman-line" style="text-align:center; margin-top:10px;">
+                    Aur Allah kare hamari dosti itni gehri ho jaaye<br>
+                    ke <span class="highlight-line">kartoot mere hoon… aur bezati tumhari ho!!! 🤭😂</span>
+                </div>
+
+                <div class="ornament" style="opacity:0; transition:opacity 0.6s;" id="ornament3">✦ ✦ ✦</div>
+
+                <div class="urdu-line" style="text-align:center; margin-top:12px;">
+                    ہر کوئی عیدی کی بھوکی نہیں ہوتی…<br>
+                    لیکن میں ہوں!!! 😌💸<br>
+                    اس لیے مہربانی فرما کر اپنی عیدی فوراً میرے حوالے کر دیں!!!
+                </div>
+
+                <div class="roman-line" style="text-align:center; margin-top:12px; font-style:italic;">
+                    مجھے آپ کی بہت فکر ہے… 🥺<br>
+                    پیسہ انسان کو کبھی سکون نہیں دے سکتا…<br>
+                    اس لیے آپ کی جتنی عیدی اکھٹی ہو —<br>
+                    <span class="highlight-line">مجھے دے دینا… تاکہ آپ سکون سے رہ سکیں!!! 😇💰</span><br><br>
+                    میں آپ کی خاطر یہ بے سکونی قبول کرنے کے لیے تیار ہوں…<br>
+                    آخر دوستی میں اتنی قربانی تو دینی پڑتی ہے!!! 😌🤝
+                </div>
+
+                <div class="ornament" style="opacity:0; transition:opacity 0.6s;" id="ornament4">❧ ❧ ❧</div>
+
+                <div class="roman-line" style="text-align:center; margin-top:14px; font-size:0.85rem; opacity:0.7; font-style:italic;">
+                    apki tareefon ki dhoor ka ekhtitam — ek shair k saath...
+                </div>
+                <div class="shayari-line">Eid aa gayi hai zamaane mein,</div>
+                <div class="shayari-line">Meri dost gir gayi ghusal khaane mein... 😂🚿</div>
+
+            </div>
+        </div>
+        <div style="text-align:center;">
+            <button class="btn" id="btn-step2" onclick="nextStep('step2','step3')" style="display:none;">
+                Check Memories📸
+            </button>
+        </div>
+    </section>
+
+    <!-- ══════ STEP 3: Gallery ══════ -->
+    <section id="step3" class="section">
+        <h2 style="text-align:center;">Our Memories 🫶</h2>
+        <p class="subtitle" style="text-align:center;">I Love You So Much</p>
+        <div class="gallery-grid">
+            <div class="img-wrapper"><img src="pic 1.jpeg" alt="Memory 1" loading="lazy"></div>
+            <div class="img-wrapper"><img src="pic 2.jpeg" alt="Memory 2" loading="lazy"></div>
+            <div class="img-wrapper"><img src="pic 3.jpeg" alt="Memory 3" loading="lazy"></div>
+            <div class="img-wrapper"><img src="pic 2.jpeg" alt="Memory 4" loading="lazy"></div>
+            <div class="img-wrapper"><img src="pic 5.jpeg" alt="Memory 5" loading="lazy"></div>
+            <div class="img-wrapper"><img src="pic 6.jpeg" alt="Memory 6" loading="lazy"></div>
+        </div>
+        <div style="text-align:center;">
+            <button class="btn" onclick="nextStep('step3','step4')">A Message For My Bestie 💌</button>
+        </div>
+    </section>
+
+    <!-- ══════ STEP 4: Typewriter ══════ -->
+    <section id="step4" class="section">
+        <p class="subtitle" style="text-align:center;">A Message For My Chulbul Pandey</p>
+        <div class="card typewriter-box" id="typed-text-container">
+            <span class="cursor"></span>
+        </div>
+        <div style="text-align:center;">
+            <button class="btn" id="btn-step4" style="display:none;" onclick="nextStep('step4','step5')">
+                One Last Thing ✨
+            </button>
+        </div>
+    </section>
+
+    <!-- ══════ STEP 5: Quiz ══════ -->
+    <section id="step5" class="section">
+        <p class="subtitle" style="text-align:center;">The Love Quiz 💛</p>
+        <div class="card" id="quiz-container">
+            <div id="quiz-progress">Question 1 of 3</div>
+            <h3 id="question-text" style="font-family:'Playfair Display',serif; font-size:1.1rem; margin-bottom:18px; line-height:1.6;"></h3>
+            <div id="options-container"></div>
+        </div>
+        <div id="quiz-success" style="display:none; text-align:center;">
+            <h2>You hold the key to my heart! 🗝️💛</h2>
+            <div class="ornament">✦ ✦ ✦</div>
+            <button class="btn" onclick="nextStep('step5','step6')">Unlock Eid Surprise 🎁</button>
+        </div>
+    </section>
+
+    <!-- ══════ STEP 6: Certificate ══════ -->
+    <section id="step6" class="section">
+        <div class="certificate">
+            <p class="subtitle">Presented with Love</p>
+            <h1>The Princess of Beast World</h1>
+            <span class="cert-seal">🌙</span>
+            <p style="font-family:'Amiri',serif; direction:rtl; font-size:1.2rem; margin:16px 0; color:var(--gold-light); line-height:2;">
+                اللّٰھُمَّ لَا تُفَرِّقْ بَیْنَنَا
+            </p>
+            <p style="font-size:0.85rem; opacity:0.65; margin-bottom:16px;">"O Allah, never separate us."</p>
+            <p style="line-height:1.8; font-size:0.95rem;">
+                Presented to you — for being my soulmate and making every moment of my existence a beautiful blessing. 💖
+            </p>
+            <div class="ornament">❧ ❧ ❧</div>
+            <h2>Eid Mubarak!</h2>
+            <p style="font-style:italic; font-size:0.9rem; margin-top:14px; opacity:0.9;">
+                My Eidi for you: Infinite Roast + My Promise to be with you always. 🤍
+            </p>
+        </div>
+    </section>
+
+</div>
+
+<script>
+// ---- STARS ----
+(function() {
+    const sf = document.getElementById('starfield');
+    for (let i = 0; i < 120; i++) {
+        const s = document.createElement('div');
+        s.className = 'star';
+        const size = Math.random() * 2.5 + 0.5;
+        s.style.cssText = `
+            width:${size}px; height:${size}px;
+            left:${Math.random()*100}%;
+            top:${Math.random()*100}%;
+            --dur:${(Math.random()*4+2).toFixed(1)}s;
+            --op:${(Math.random()*0.7+0.3).toFixed(2)};
+            animation-delay:${(Math.random()*5).toFixed(1)}s;
+        `;
+        sf.appendChild(s);
+    }
+})();
+
+// ---- LANTERNS ----
+const lanternEmojis = ['🏮','🪔','✨','⭐','🌟'];
+function spawnLantern() {
+    const l = document.createElement('div');
+    l.className = 'lantern';
+    l.textContent = lanternEmojis[Math.floor(Math.random()*lanternEmojis.length)];
+    l.style.cssText = `left:${Math.random()*95}vw; animation-duration:${(Math.random()*12+10).toFixed(1)}s; animation-delay:0s; font-size:${(Math.random()*1.2+1).toFixed(1)}rem;`;
+    document.body.appendChild(l);
+    setTimeout(() => l.remove(), 25000);
+}
+setInterval(spawnLantern, 2800);
+spawnLantern();
+
+// ---- NAVIGATION ----
+function nextStep(fromId, toId) {
+    const from = document.getElementById(fromId);
+    from.classList.remove('visible');
+    setTimeout(() => {
+        from.classList.remove('active');
+        const to = document.getElementById(toId);
+        to.classList.add('active');
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+            to.classList.add('visible');
+        }));
+        if (toId === 'step2') startRevealMessages();
+        if (toId === 'step4') startTyping();
+        if (toId === 'step5') { currentQuestion = 0; loadQuiz(); }
+        if (toId === 'step6') launchConfetti();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 600);
+}
+
+// Activate first section
+setTimeout(() => document.getElementById('step1').classList.add('visible'), 100);
+
+// ---- STEP 2: REVEAL MESSAGES ----
+function startRevealMessages() {
+    const lines = document.querySelectorAll('#funnyScroll .urdu-line, #funnyScroll .roman-line, #funnyScroll .shayari-line');
+    const ornaments = document.querySelectorAll('#funnyScroll .ornament');
+    lines.forEach((el, i) => {
+        setTimeout(() => {
+            el.classList.add('revealed');
+        }, i * 180);
+    });
+    ornaments.forEach((el, i) => {
+        setTimeout(() => { el.style.opacity = '0.5'; }, 1500 + i * 600);
+    });
+    // Show next button after all revealed
+    setTimeout(() => {
+        document.getElementById('btn-step2').style.display = 'inline-block';
+    }, lines.length * 180 + 1200);
+}
+
+// ---- STEP 4: TYPEWRITER ----
+const messageText = `Eid Mubarak Muhtarma 🤍🌙\n\nMeri Pyari si Churail, Bhathakti Aatma, Boothni Kahi Ki....\n\nAllah Tmhein Hamisha Khush Rakhei. 🤲\n\nAur Mujhe Hamisha tumhein tang karne Aur Satane ki Toufeeq Ataa Farmaye\nIsi Tarah Tumhein Ghussa Dilane ki Taqat Ataa Farmayee\nAmeeeeeeeen Summmaaa Aaameeeen🤲🤲🤲... `;
+
+function startTyping() {
+    const container = document.getElementById('typed-text-container');
+    container.innerHTML = '<span class="cursor"></span>';
+    let i = 0;
+    const cursor = container.querySelector('.cursor');
+
+    function typeChar() {
+        if (i < messageText.length) {
+            const ch = messageText.charAt(i);
+            const node = ch === '\n' ? document.createElement('br') : document.createTextNode(ch);
+            container.insertBefore(node, cursor);
+            i++;
+            setTimeout(typeChar, ch === '\n' ? 200 : 38);
+        } else {
+            cursor.remove();
+            document.getElementById('btn-step4').style.display = 'inline-block';
+        }
+    }
+    typeChar();
+}
+
+// ---- STEP 5: QUIZ ----
+const quizData = [
+    {
+        question: "What is my absolute favorite thing about you?",
+        options: ["Your Understanding 💭", "Everything 💛", "Your Kindness 🌸", "Your Humor 😂"],
+        answer: "Everything 💛"
+    },
+    {
+        question: "Where is my favorite place in the world?",
+        options: ["Korea 🇰🇷", "The Mountains ⛰️", "Wherever you are 🌍", "The Beach 🌊"],
+        answer: "Wherever you are 🌍"
+    },
+    {
+        question: "How much do I love you?",
+        options: ["A lot 💓", "100% 💯", "Infinity ♾️", "More than chai 🍵"],
+        answer: "Infinity ♾️"
+    }
+];
+
+let currentQuestion = 0;
+
+function loadQuiz() {
+    const container = document.getElementById('quiz-container');
+    const successEl = document.getElementById('quiz-success');
+
+    if (currentQuestion >= quizData.length) {
+        container.style.display = 'none';
+        successEl.style.display = 'block';
+        launchConfetti();
+        return;
+    }
+
+    container.style.display = 'block';
+    successEl.style.display = 'none';
+
+    const q = quizData[currentQuestion];
+    document.getElementById('quiz-progress').textContent = `Question ${currentQuestion + 1} of ${quizData.length}`;
+    document.getElementById('question-text').textContent = q.question;
+
+    const optCont = document.getElementById('options-container');
+    optCont.innerHTML = '';
+    q.options.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.className = 'btn quiz-btn';
+        btn.textContent = opt;
+        btn.onclick = () => checkAnswer(btn, opt, q.answer);
+        optCont.appendChild(btn);
+    });
+}
+
+function checkAnswer(btn, selected, correct) {
+    document.querySelectorAll('.quiz-btn').forEach(b => b.disabled = true);
+    if (selected === correct) {
+        btn.classList.add('correct');
+        btn.textContent += ' ✓';
+        setTimeout(() => { currentQuestion++; loadQuiz(); }, 1000);
+    } else {
+        btn.classList.add('wrong');
+        btn.textContent = '❌ Try again, love!';
+        setTimeout(() => {
+            document.querySelectorAll('.quiz-btn').forEach(b => { b.disabled = false; b.classList.remove('wrong','correct'); });
+            loadQuiz();
+        }, 1500);
+    }
+}
+
+// ---- CONFETTI ----
+function launchConfetti() {
+    const colors = ['#e2c779','#ffeb99','#c9a227','#fffbe6','#f5dfa0','#b89a45'];
+    for (let i = 0; i < 80; i++) {
+        setTimeout(() => {
+            const c = document.createElement('div');
+            c.className = 'confetti-piece';
+            c.style.cssText = `
+                left:${Math.random()*100}vw;
+                top:-10px;
+                background:${colors[Math.floor(Math.random()*colors.length)]};
+                animation-duration:${(Math.random()*2+1.5).toFixed(1)}s;
+                animation-delay:${(Math.random()*1).toFixed(2)}s;
+                width:${Math.random()*8+4}px;
+                height:${Math.random()*8+4}px;
+                border-radius:${Math.random()>0.5?'50%':'2px'};
+            `;
+            document.body.appendChild(c);
+            setTimeout(() => c.remove(), 4000);
+        }, i * 30);
+    }
+}
+</script>
+</body>
+</html>
